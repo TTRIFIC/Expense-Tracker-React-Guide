@@ -1,8 +1,9 @@
+import React, { useState } from "react";
 import Expenses from "./components/Expenses/Expenses";
 import NewExpense from "./components/NewExpense/NewExpense";
 
-const App = () => {
-  const expenses = [
+// Used for initalizing the array with "dummy data" for demonstration purposes
+const dummyData = [
     {
       id: "e1",
       title: "Toilet Paper",
@@ -24,8 +25,17 @@ const App = () => {
     },
   ];
 
-  const addExpenseHandler = expense => {
+const App = () => {
 
+  // When having an array of data, use useState because that should be an interactive part of the website.
+  const [expenses, setExpenses] = useState(dummyData);
+
+  // This is responsible for adding new expenses to the array. Essentially, it takes the previous version of the expenses array
+  // the "previous state snapshot" and creates a new array with the new expense added. 
+  const addExpenseHandler = (expense) => {
+    setExpenses(prevExpenses => {
+      return [expense, ...prevExpenses];
+    });
   };
 
   return (
@@ -34,6 +44,6 @@ const App = () => {
       <Expenses items={expenses} />
     </div>
   );
-}
+};
 
 export default App;

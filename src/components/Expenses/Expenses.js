@@ -1,6 +1,7 @@
 import React, { useState } from "react";
-import ExpenseItem from "./ExpenseItem";
+import ExpensesList from "./ExpensesList";
 import ExpensesFilter from "./ExpensesFilter";
+import ExpensesChart from "./ExpensesChart";
 import Card from "../UI/Card";
 import "./Expenses.css";
 
@@ -9,6 +10,20 @@ const Expenses = (props) => {
   const filterChangeHandler = (selectedYear) => {
     setFilteredYear(selectedYear);
   };
+  const filteredExpenses = props.items.filter((expense) => {
+    return expense.date.getFullYear().toString() === filteredYear;
+  });
+  // *ABOVE*
+  // This is responsible for making the filter interactive. Since it is an interactive component, you want to use useState
+  // to be able to save what the input is for the drop down.
+  // The filteredExpenses const evaulates the value of the filtered year and returns the filtered array. Implemented below
+  // as filteredExpenses.map...
+
+  // *BELOW*
+  //The props.items.map portion is responsible for adding new dynamically rendered components. When a new expense is added
+  // that function adds a new component to the code. This will be good to know for future uses
+
+  // Key attribute adds uniqueness to components. A MUST HAVE when having a list of items
 
   return (
     <div>
@@ -17,26 +32,8 @@ const Expenses = (props) => {
           selected={filteredYear}
           onChangeFilter={filterChangeHandler}
         />
-        <ExpenseItem
-          title={props.items[0].title}
-          amount={props.items[0].amount}
-          date={props.items[0].date}
-        ></ExpenseItem>
-        <ExpenseItem
-          title={props.items[1].title}
-          amount={props.items[1].amount}
-          date={props.items[1].date}
-        ></ExpenseItem>
-        <ExpenseItem
-          title={props.items[2].title}
-          amount={props.items[2].amount}
-          date={props.items[2].date}
-        ></ExpenseItem>
-        <ExpenseItem
-          title={props.items[3].title}
-          amount={props.items[3].amount}
-          date={props.items[3].date}
-        ></ExpenseItem>
+        <ExpensesChart expenses={filteredExpenses} />
+        <ExpensesList items={filteredExpenses} />
       </Card>
     </div>
   );
